@@ -56,7 +56,7 @@ def print_file_from_url(url, printer_name, copies, page_range, paper_size, duple
             # Close the printer handle
             win32print.ClosePrinter(printer_handle)
     finally:
-        # Delete the temporary file
+        # Delete the temporary file from cache
         os.unlink(temp_file_path)
 
 @app.route('/print', methods=['POST'])
