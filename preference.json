@@ -1,0 +1,13 @@
+{
+    "url": "https://myprintserver/exemple.pdf",
+    "printer_name": "MyPrinter",
+    "copies": 2,
+    "page_range": "1-5",
+    "paper_size": "A4",
+    "duplex": "LongEdge",
+    "color_mode": "Color",
+    "print_quality": "High",
+    "orientation": "Portrait",
+    "collate": true,
+    "print_to_file": false
+}

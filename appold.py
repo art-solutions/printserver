@@ -6,7 +6,7 @@ import requests
 
 app = Flask(__name__)
 
-def print_file_from_url(url, printer_name, copies, page_range, paper_size, duplex, color_mode, print_quality, orientation, collate, print_to_file):
+def print_file_from_url(url):
     # Download the file from the URL
     response = requests.get(url)
 
@@ -16,6 +16,9 @@ def print_file_from_url(url, printer_name, copies, page_range, paper_size, duple
         temp_file_path = temp_file.name
 
     try:
+        # Set the default printer
+        printer_name = win32print.GetDefaultPrinter()
+
         # Open the printer handle
         printer_handle = win32print.OpenPrinter(printer_name)
 
@@ -28,20 +31,7 @@ def print_file_from_url(url, printer_name, copies, page_range, paper_size, duple
                 with open(temp_file_path, "rb") as file:
                     file_content = file.read()
 
-                # Set print job properties
-                properties = {
-                    "Copies": copies,
-                    "PageRange": page_range,
-                    "PaperSize": paper_size,
-                    "Duplex": duplex,
-                    "ColorMode": color_mode,
-                    "PrintQuality": print_quality,
-                    "Orientation": orientation,
-                    "Collate": collate,
-                    "PrintToFile": print_to_file
-                }
-
-                # Send the file content to the printer with the specified properties
+                # Send the file content to the printer
                 win32print.StartPagePrinter(printer_handle)
                 win32print.WritePrinter(printer_handle, file_content)
                 win32print.EndPagePrinter(printer_handle)
@@ -59,22 +49,9 @@ def print_file_from_url(url, printer_name, copies, page_range, paper_size, duple
         # Delete the temporary file
         os.unlink(temp_file_path)
 
-@app.route('/print', methods=['POST'])
-def print_url():
-    data = request.get_json()
-    url = data.get('url')
-    printer_name = data.get('printer_name')
-    copies = data.get('copies', 1)
-    page_range = data.get('page_range', '')
-    paper_size = data.get('paper_size', 'A4')
-    duplex = data.get('duplex', '')
-    color_mode = data.get('color_mode', 'Color')
-    print_quality = data.get('print_quality', 'High')
-    orientation = data.get('orientation', 'Portrait')
-    collate = data.get('collate', True)
-    print_to_file = data.get('print_to_file', False)
-
-    print_file_from_url(url, printer_name, copies, page_range, paper_size, duplex, color_mode, print_quality, orientation, collate, print_to_file)
+@app.route('/<path:url>')
+def print_url(url):
+    print_file_from_url(url)
     return "Print request received"
 
 if __name__ == '__main__':
