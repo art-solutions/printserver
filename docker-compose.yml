@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  print-server:
+    build: .
+    ports:
+      - "5700:5700"
+    volumes:
+      - ./app.py:/app/app.py
