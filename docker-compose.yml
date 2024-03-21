@@ -6,4 +6,4 @@ services:
     ports:
       - "5700:5700"
     volumes:
-      - ./app.py:/app/app.py
+      - ./app.py:/app.py
