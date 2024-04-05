@@ -1,8 +1,9 @@
 from flask import Flask, request
 import os
 import tempfile
-import win32print
 import requests
+import win32print
+
 
 app = Flask(__name__)
 
@@ -56,3 +57,4 @@ def print_url(url):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5700)
+
